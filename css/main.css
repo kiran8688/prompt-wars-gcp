@@ -1,0 +1,123 @@
+/* ============================================================
+ * main.css — High-Density Layout Engine: Smart Venue Assistant
+ * ============================================================ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--clr-bg-primary);
+  color: var(--clr-text-primary);
+  font-family: var(--ff-body);
+}
+
+.topbar {
+  height: 72px;
+  width: 100%;
+  padding: 0 var(--sp-4);
+  background: var(--clr-bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--clr-surface-container);
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.topbar__logo {
+  width: 32px;
+  height: 32px;
+  color: var(--clr-accent);
+}
+
+.topbar__app-name {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--clr-text-primary);
+  letter-spacing: -0.025em;
+}
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+/* ============================================================
+ * LAYOUT: 60/40 Tactical Split
+ * ============================================================ */
+.main-viewport {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 72px);
+  width: 100vw;
+  overflow: hidden;
+  background: var(--clr-bg-primary);
+}
+
+/* Primary Interactive Zone (60%) */
+.center-col {
+  flex: 0 0 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-4);
+  gap: var(--sp-4);
+  border-right: 1px solid var(--clr-surface-container);
+  overflow-y: auto;
+  background: var(--clr-bg-primary);
+}
+
+/* Map Container: 40% of col height */
+.vmap-container {
+  flex: 0 0 40%;
+  min-height: 380px;
+  background: var(--clr-bg-secondary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+.placeholder-map {
+  width: 100%;
+  height: 100%;
+  background: #E8EAED;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-text-dim);
+  font-family: var(--ff-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+}
+
+/* Scrollable Analytics Sidebar (40%) */
+.right-panel {
+  flex: 0 0 40%;
+  height: 100%;
+  background: var(--clr-bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-4);
+  overflow-y: auto;
+}
+
+.right-panel::-webkit-scrollbar {
+  width: 0;
+}

@@ -1,0 +1,110 @@
+/* ============================================================
+ * theme.css — Design System Tokens: Ethereal Command
+ * ============================================================
+ * CREATIVE NORTH STAR: "The Fluid Intelligence Layer"
+ * 
+ * Optimized for premium glassmorphic experience with high tactile 
+ * transparency and Material-inspired elevations.
+ * ============================================================ */
+
+:root {
+  /* ---- TITAN ARENA: Surgical Neutral Foundation ---- 
+     High-contrast, clinical foundation for 24/7 command operations.
+  */
+  --clr-bg-primary:      #FFFFFF;           /* Stark canvas */
+  --clr-bg-secondary:    #F1F3F4;           /* Tonal tier 1 */
+  --clr-bg-elevated:     #FFFFFF;           /* Precision cards */
+  --clr-bg-sidebar:      #F8F9FA;           /* Intelligence zone foundation */
+  
+  /* Precision Surface Scale */
+  --clr-surface-container:         #E8EAED; 
+  --clr-surface-container-high:    #DADCE0;
+  --clr-surface-container-highest: #BDC1C6;
+
+  /* ---- SEMANTIC MISSION INDICATORS: Clinical Precision ---- */
+  --clr-accent:          #1A73E8;           /* Titan Blue: Mission Active */
+  --clr-accent-dark:     #1557B0;
+  --clr-accent-light:    rgba(26, 115, 232, 0.08);
+  
+  --clr-status-low:      #1E8E3E;           /* Green: Optimal Flow (<5m) */
+  --clr-status-low-bg:   rgba(30, 142, 62, 0.08);
+  
+  --clr-status-med:      #F9AB00;           /* Yellow: Moderate (5-15m) */
+  --clr-status-med-bg:   rgba(249, 171, 0, 0.08);
+  
+  --clr-status-high:     #E8710A;           /* Orange: Busy (15-30m) */
+  --clr-status-high-bg:  rgba(232, 113, 10, 0.08);
+
+  --clr-status-danger:   #D93025;           /* Red: Tactical Emergency (>30m) */
+  --clr-status-danger-bg:rgba(217, 48, 37, 0.1);
+
+  /* ---- OPERATIONAL TYPOGRAPHY ---- */
+  --ff-display:    'Manrope', sans-serif;   
+  --ff-body:       'Inter', sans-serif;     
+  --ff-label:      'Inter', sans-serif;     
+
+  --clr-text-primary:    #202124;           /* Mission Critical Ink */
+  --clr-text-secondary:  #5F6368;           /* Functional Slate */
+  --clr-text-dim:        #80868B;           /* Quiet Metadata */
+
+  /* ---- RADIUS & MATERIAL DEPTH ---- */
+  --radius-sm:    8px;      
+  --radius-md:    12px;      
+  --radius-lg:    16px;      /* Pill & Elevated Default */
+  --radius-full:  9999px;   
+
+  /* Material-Inspired Elevated Shadows */
+  --shadow-sm: 0 1px 2px rgba(60,64,67, 0.3), 0 1px 3.1px 1px rgba(60,64,67, 0.15);
+  --shadow-md: 0 4px 8px 3px rgba(60,64,67, 0.15), 0 1px 3px rgba(60,64,67, 0.3);
+  --shadow-lg: 0 12px 16px 4px rgba(60,64,67, 0.1);
+  --shadow-heavy: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12); /* FAB/Alert */
+
+  /* ---- GRID & SPACING ---- */
+  --sp-1:   0.5rem;      
+  --sp-2:   0.75rem;        
+  --sp-4:   1.5rem;      
+  --sp-6:   2.5rem;      
+}
+
+  /* ---- SPECIAL TEXTURES ---- */
+  --glass-border: 1px solid rgba(112, 120, 131, 0.15); /* Ghost Border (15% alpha) */
+  --gradient-primary: linear-gradient(135deg, var(--clr-accent) 0%, var(--clr-accent-light) 100%);
+}
+
+body {
+  background-color: var(--clr-bg-primary);
+  color: var(--clr-text-primary);
+  font-family: var(--ff-body);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+/* ============================================================
+ * THEME: OBSIDIAN CONCIERGE (Night Mode Overrides)
+ * ============================================================ */
+.theme-dark {
+  /* ---- ARCHITECTURAL CONCIERGE: DARK MODE ---- 
+     Elite, high-contrast operational palette.
+  */
+  --clr-bg-primary:      #121212;           /* Stark black surface */
+  --clr-bg-secondary:    #1E1F21;           /* Surface Container Low */
+  --clr-bg-elevated:     #242529;           /* Surface Container Lowest */
+  --clr-bg-sidebar:      #18191B;           /* Deep monochrome sidebar */
+
+  --clr-surface-container:         #2D2E31;
+  --clr-surface-container-high:    #3C3D40;
+  --clr-surface-container-highest: #4F5053;
+
+  --clr-text-primary:    #E8EAED;           /* High-Density White */
+  --clr-text-secondary:  #9AA0A6;           /* Functional Grey */
+  --clr-text-dim:        #70757A;           /* Minimalist Metadata */
+
+  /* Neutral inverted shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0, 0.4), 0 1px 3.1px 1px rgba(0,0,0, 0.2);
+  --shadow-md: 0 4px 8px 3px rgba(0,0,0, 0.3), 0 1px 3px rgba(0,0,0, 0.4);
+  --shadow-lg: 0 12px 16px 4px rgba(0,0,0, 0.25);
+  
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+}
+

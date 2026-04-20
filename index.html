@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Arena | Tactical Command</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- FONTS: High-density Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- DESIGN SYSTEM: Modular Architecture -->
+    <link rel="stylesheet" href="css/theme.css?v=titan_arena_v1">
+    <link rel="stylesheet" href="css/main.css?v=titan_arena_v1">
+    <link rel="stylesheet" href="css/components.css?v=emergency_v5">
+    
+    <!-- ICONS -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="theme-light"> <!-- Default to Light Mode per rules -->
+
+    <!-- TOP NAVBAR: Fixed Utility Zone -->
+    <header class="topbar">
+        <div class="topbar__brand">
+            <i data-lucide="shield-check" style="width: 28px; height: 28px; color: var(--clr-accent);"></i>
+            <h1 class="topbar__app-name">Titan Arena</h1>
+        </div>
+
+        <div class="topbar__actions">
+            <div id="systemClock" style="font-family: var(--ff-body); font-weight: 700; color: var(--clr-text-dim); margin-right: var(--sp-4);">00:00:00</div>
+            <button class="theme-switch" id="themeToggle" title="Toggle Appearance">
+                <i data-lucide="moon" style="width: 20px; height: 20px;"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN VIEWPORT: 60/40 Tactical Split -->
+    <main class="main-viewport">
+        
+        <!-- LEFT/CENTER COLUMN: Primary Interactive Zone (60%) -->
+        <section class="center-col">
+            <!-- Map Container (40% height constraint) -->
+            <div class="vmap-container">
+                <div class="placeholder-map">
+                    <span>TITAN ARENA SATELLITE TELEMETRY [LIVE]</span>
+                </div>
+            </div>
+
+            <!-- Stand Navigation: Horizontal Pill Row -->
+            <nav class="stand-nav" id="standNav">
+                <button class="btn-pill btn-pill--active" onclick="selectStand('North Stand')"><i data-lucide="compass" style="width:14px; height:14px;"></i> North Stand</button>
+                <button class="btn-pill" onclick="selectStand('South Stand')"><i data-lucide="compass" style="width:14px; height:14px;"></i> South Stand</button>
+                <button class="btn-pill" onclick="selectStand('East Stand')"><i data-lucide="compass" style="width:14px; height:14px;"></i> East Stand</button>
+                <button class="btn-pill" onclick="selectStand('West Stand')"><i data-lucide="compass" style="width:14px; height:14px;"></i> West Stand</button>
+                <button class="btn-pill" onclick="selectStand('Club Wembley')"><i data-lucide="star" style="width:14px; height:14px;"></i> Club Wembley (VIP)</button>
+            </nav>
+
+            <!-- Dynamic Details Area: Grid of Material Cards -->
+            <div class="details-grid" id="detailsGrid">
+                <!-- Cards injected via JS -->
+            </div>
+        </section>
+
+        <!-- RIGHT COLUMN: Sidebar Analytics (40%) -->
+        <aside class="right-panel">
+            
+            <h2 style="font-family: var(--ff-display); font-size: 1rem; font-weight: 800; margin-bottom: var(--sp-3); color: var(--clr-text-primary); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
+                <i data-lucide="brain-circuit" style="width: 18px; height: 18px; color: var(--clr-accent);"></i> AI Insights
+            </h2>
+            <div id="aiInsightsOverview" style="margin-bottom: var(--sp-4);">
+                <!-- AI Insights injected via JS -->
+            </div>
+
+            <h2 style="font-family: var(--ff-display); font-size: 1rem; font-weight: 800; margin-bottom: var(--sp-3); color: var(--clr-text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Tactical Flux</h2>
+            
+            <div id="analyticsOverview" style="margin-bottom: var(--sp-4);">
+                <!-- Analytics metrics injected via JS -->
+            </div>
+
+            <h2 style="font-family: var(--ff-display); font-size: 1rem; font-weight: 800; margin-bottom: var(--sp-3); color: var(--clr-text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Gate Telemetry</h2>
+            
+            <div class="gate-list" id="gateList">
+                <!-- Gate cards injected via JS -->
+            </div>
+
+            <button class="emergency-btn" id="emergencyBtn" style="position: relative; top: auto; left: auto; transform: none; width: 100%; margin-top: var(--sp-4);">
+                <i data-lucide="alert-triangle" style="width: 20px; height: 20px; margin-right: 6px;"></i>
+                Tactical Emergency
+            </button>
+        </aside>
+
+    </main>
+
+    <!-- FLOATING ELEMENTS: Absolute Responders -->
+
+    <button class="chatbot-fab" id="chatbotToggle">
+        <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
+    </button>
+
+    <!-- AI CHAT WINDOW -->
+    <div class="chat-window hidden" id="chatWindow">
+        <div class="chat-header">
+            <span style="font-weight: 800; font-family: var(--ff-display); letter-spacing: 0.05em;">TITAN</span>
+            <button onclick="toggleChat()" style="background:none; border:none; color:#fff; cursor:pointer;">
+                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+            </button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="bubble bubble--bot">Awaiting sector intelligence. How can I assist with crowd management?</div>
+        </div>
+        <div style="padding: var(--sp-2); background: var(--clr-bg-primary); border-top: 1px solid var(--clr-surface-container); display: flex; gap: 8px;">
+            <input id="chatInput" type="text" placeholder="Type a command..." style="flex:1; border:none; background: var(--clr-bg-secondary); padding: 10px 16px; border-radius: var(--radius-full); font-family: var(--ff-body);">
+            <button id="chatSendBtn" style="width: 40px; height: 40px; border-radius: 50%; background: var(--clr-accent); border:none; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC -->
+    <!-- MISSION CRITICAL APIs: Arming Production Keys -->
+    <script>
+        window.TITAN_CONFIG = {
+            GMAPS_KEY: "AIzaSyCXqTuHoBuSLlsnE37lCh1PwQCH-9iZ0QY",
+            GEMINI_KEY: "AIzaSyAYDclEiY1dxaX8QAI-ZtuwWrIE4hxhZg4"
+        };
+    </script>
+    
+    <!-- GOOGLE MAPS API: Satellite & tactical perspective -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXqTuHoBuSLlsnE37lCh1PwQCH-9iZ0QY&libraries=places"></script>
+
+    <!-- APPLICATION LOGIC -->
+    <script src="js/titan_wembley.js?v=emergency_v5"></script>
+</body>
+</html>
