@@ -1,0 +1,13 @@
+# Private Configuration
+config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Firebase
+.firebase/
+.firebaserc
+
+# Docker
+.dockerignore

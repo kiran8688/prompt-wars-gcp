@@ -1,0 +1,6 @@
+# Cloud Run Deployment Ignore File
+.git
+.gitignore
+LICENSE
+README.md
+# We specifically do NOT ignore config.js here so it gets deployed to Cloud Run

@@ -120,15 +120,21 @@
 
     <!-- APPLICATION LOGIC -->
     <!-- MISSION CRITICAL APIs: Arming Production Keys -->
+    <!-- APPLICATION LOGIC -->
+    <!-- MISSION CRITICAL APIs: Loading Private Configuration -->
+    <script src="config.js"></script>
     <script>
-        window.TITAN_CONFIG = {
-            GMAPS_KEY: "AIzaSyCXqTuHoBuSLlsnE37lCh1PwQCH-9iZ0QY",
-            GEMINI_KEY: "AIzaSyAYDclEiY1dxaX8QAI-ZtuwWrIE4hxhZg4"
-        };
+        // Dynamically load Google Maps using the key from config.js
+        (function() {
+            if (window.TITAN_CONFIG && window.TITAN_CONFIG.GMAPS_KEY) {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${window.TITAN_CONFIG.GMAPS_KEY}&libraries=places`;
+                script.async = true;
+                script.defer = true;
+                document.head.appendChild(script);
+            }
+        })();
     </script>
-    
-    <!-- GOOGLE MAPS API: Satellite & tactical perspective -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXqTuHoBuSLlsnE37lCh1PwQCH-9iZ0QY&libraries=places"></script>
 
     <!-- APPLICATION LOGIC -->
     <script src="js/titan_wembley.js?v=emergency_v5"></script>
