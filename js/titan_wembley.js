@@ -98,6 +98,10 @@ function getSemanticColor(waitTime) {
 // --- INITIALIZATION ---
 function init() {
     console.log("[TITAN ARENA] Booting Tactical Engine...");
+    
+    // Mission Critical: Initialize Satellite Telemetry
+    initMap().catch(err => console.error("[TITAN] Map Boot Failed:", err));
+
     renderGates();
     renderAnalytics();
     renderAIInsights();
@@ -108,11 +112,6 @@ function init() {
     // Realtime Simulation loop
     setInterval(updateClock, 1000);
     setInterval(simulateRealtimeData, 10000); // 10-second simulation tick
-    
-    // Check for Google Maps provision
-    if (window.TITAN_CONFIG && window.TITAN_CONFIG.GMAPS_KEY && window.TITAN_CONFIG.GMAPS_KEY !== 'PROVIDE_KEY_HERE') {
-        initMap();
-    }
 }
 
 let gateMarkers = [];
@@ -124,49 +123,78 @@ function getMarkerColor(waitTime) {
     return '#ef4444';                       // Red - Critical
 }
 
-function initMap() {
+async function initMap() {
     const arenaLocation = { lat: 51.5560, lng: -0.2796 }; // Wembley Stadium
+    
     try {
-        map = new google.maps.Map(document.querySelector('.vmap-container'), {
+        // Modern approach: Import required libraries
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+        map = new Map(document.querySelector('.vmap-container'), {
             zoom: 17,
             center: arenaLocation,
             mapTypeId: 'satellite',
             tilt: 45,
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            mapId: "DEMO_MAP_ID" // Required for AdvancedMarkerElement
         });
+
+        // Store the class for use in other functions
+        window.AdvancedMarkerElement = AdvancedMarkerElement;
+        
         addGateMarkers();
+        
+        // Add map click listener
+        map.addListener('click', () => {
+            if (activeInfoWindow) {
+                activeInfoWindow.close();
+                activeInfoWindow = null;
+            }
+        });
+
     } catch (e) {
-        console.error("[MAP] Initialization failed:", e);
+        console.error("[TITAN MAP] Initialization failed:", e);
+        const placeholder = document.querySelector('.placeholder-map');
+        if (placeholder) placeholder.innerText = "MAP INITIALIZATION ERROR: CHECK API ENABLEMENT";
     }
 }
 
 let activeInfoWindow = null;
 
 function addGateMarkers() {
+    if (!map || !window.AdvancedMarkerElement) {
+        console.warn("[TITAN] Map or Marker library not ready.");
+        return;
+    }
+    
     // Clear previous markers
     gateMarkers.forEach(m => m.setMap(null));
     gateMarkers = [];
 
     venueData.gates.forEach(gate => {
         const color = getMarkerColor(gate.waitTime);
-        const marker = new google.maps.Marker({
+        // Create modern AdvancedMarkerElement
+        const markerPin = document.createElement('div');
+        markerPin.style.width = '24px';
+        markerPin.style.height = '24px';
+        markerPin.style.borderRadius = '50%';
+        markerPin.style.backgroundColor = color;
+        markerPin.style.border = '2px solid white';
+        markerPin.style.display = 'flex';
+        markerPin.style.alignItems = 'center';
+        markerPin.style.justifyContent = 'center';
+        markerPin.style.color = 'white';
+        markerPin.style.fontSize = '9px';
+        markerPin.style.fontWeight = '900';
+        markerPin.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+        markerPin.innerText = `${gate.intensity.toFixed(0)}%`;
+
+        const marker = new window.AdvancedMarkerElement({
             position: { lat: gate.lat, lng: gate.lng },
             map: map,
-            title: `${gate.name} — ${gate.label} (${gate.waitTime.toFixed(1)}m wait)`,
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 10,
-                fillColor: color,
-                fillOpacity: 0.9,
-                strokeColor: '#ffffff',
-                strokeWeight: 2.5
-            },
-            label: {
-                text: `${gate.intensity.toFixed(0)}%`,
-                color: '#ffffff',
-                fontSize: '9px',
-                fontWeight: '900'
-            }
+            title: `${gate.name} — ${gate.label}`,
+            content: markerPin
         });
 
         const infoContent = `
@@ -250,11 +278,9 @@ function simulateRealtimeData() {
 
         gate.intensity = Math.max(0, Math.min(100, gate.intensity));
 
-        // Flux adjustments
-        const flowShift = Math.floor(Math.random() * 50 - 20);
-        const outShift = Math.floor(Math.random() * 30 - 10);
-        gate.inflow = Math.max(0, gate.inflow + flowShift);
-        gate.outflow = Math.max(0, gate.outflow + outShift);
+        // Flux adjustments: Randomized around a baseline for "live" feel
+        gate.inflow = Math.floor(Math.random() * 200 + 50);
+        gate.outflow = Math.floor(Math.random() * 150 + 20);
 
         totalInflow += gate.inflow;
         totalOutflow += gate.outflow;
@@ -275,6 +301,13 @@ function simulateRealtimeData() {
     
     // Update map markers with live data
     if (map) addGateMarkers();
+
+    // Visual heartbeat feedback
+    const dashboard = document.querySelector('.dashboard');
+    if (dashboard) {
+        dashboard.style.boxShadow = 'inset 0 0 40px rgba(0, 243, 255, 0.05)';
+        setTimeout(() => { dashboard.style.boxShadow = 'none'; }, 500);
+    }
 }
 
 // --- RENDERERS ---

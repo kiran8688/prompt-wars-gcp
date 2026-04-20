@@ -18,6 +18,13 @@
     
     <!-- ICONS -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
 <body class="theme-light"> <!-- Default to Light Mode per rules -->
 
@@ -29,7 +36,11 @@
         </div>
 
         <div class="topbar__actions">
-            <div id="systemClock" style="font-family: var(--ff-body); font-weight: 700; color: var(--clr-text-dim); margin-right: var(--sp-4);">00:00:00</div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-right: 20px;">
+                <span style="display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite;"></span>
+                <span style="font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em; color: var(--clr-text-dim);">LIVE SYNC ACTIVE</span>
+                <span id="systemClock" style="font-family: var(--ff-body); font-weight: 700; color: var(--clr-text-dim); font-variant-numeric: tabular-nums; min-width: 80px;">00:00:00</span>
+            </div>
             <button class="theme-switch" id="themeToggle" title="Toggle Appearance">
                 <i data-lucide="moon" style="width: 20px; height: 20px;"></i>
             </button>
@@ -43,6 +54,7 @@
         <section class="center-col">
             <!-- Map Container (40% height constraint) -->
             <div class="vmap-container">
+
                 <div class="placeholder-map">
                     <span>TITAN ARENA SATELLITE TELEMETRY [LIVE]</span>
                 </div>
@@ -119,24 +131,34 @@
     </div>
 
     <!-- APPLICATION LOGIC -->
-    <!-- MISSION CRITICAL APIs: Arming Production Keys -->
-    <!-- APPLICATION LOGIC -->
-    <!-- MISSION CRITICAL APIs: Loading Private Configuration -->
-    <script src="config.js"></script>
+    <!-- MISSION CRITICAL: Titan Satellite Link Status Monitor -->
     <script>
-        // Dynamically load Google Maps using the key from config.js
-        (function() {
-            if (window.TITAN_CONFIG && window.TITAN_CONFIG.GMAPS_KEY) {
-                const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${window.TITAN_CONFIG.GMAPS_KEY}&libraries=places`;
-                script.async = true;
-                script.defer = true;
-                document.head.appendChild(script);
-            }
-        })();
+        // Monitor script for API health
+        window.TITAN_MAP_STATUS = "Standby";
+        window.addEventListener('load', () => {
+             setTimeout(() => {
+                const placeholder = document.querySelector('.placeholder-map');
+                if (window.google && window.google.maps) {
+                    window.TITAN_MAP_STATUS = "Active";
+                    console.info("[TITAN] Satellite Link: SECURE");
+                } else if (placeholder && placeholder.innerText.includes("OFFLINE")) {
+                     window.TITAN_MAP_STATUS = "Error";
+                }
+             }, 5000);
+        });
     </script>
 
-    <!-- APPLICATION LOGIC -->
-    <script src="js/titan_wembley.js?v=emergency_v5"></script>
+    <!-- CORE LOGIC & CONFIG -->
+    <script src="config.js"></script>
+    <script src="js/titan_wembley.js?v=titan_final_release" defer></script>
+
+    <!-- GOOGLE MAPS DYNAMIC LOADER (Modern Pattern) -->
+    <script>
+      (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load. Check for AdBlockers."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+        key: window.TITAN_CONFIG?.GMAPS_KEY || "AIzaSyDPJ73wcgToB5cwi0ZCOR3Rx9atLcDFQMc",
+        v: "weekly",
+        internalUsageAttributionIds: "gmp_mcp_codeassist_v0.1_github"
+      });
+    </script>
 </body>
 </html>
