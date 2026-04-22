@@ -98,7 +98,7 @@ function getSemanticColor(waitTime) {
 // --- INITIALIZATION ---
 function init() {
     console.log("[TITAN ARENA] Booting Tactical Engine...");
-    
+
     // Mission Critical: Initialize Satellite Telemetry
     initMap().catch(err => console.error("[TITAN] Map Boot Failed:", err));
 
@@ -108,7 +108,7 @@ function init() {
     selectStand('North Stand');
     setupEventListeners();
     updateClock();
-    
+
     // Realtime Simulation loop
     setInterval(updateClock, 1000);
     setInterval(simulateRealtimeData, 10000); // 10-second simulation tick
@@ -125,7 +125,7 @@ function getMarkerColor(waitTime) {
 
 async function initMap() {
     const arenaLocation = { lat: 51.5560, lng: -0.2796 }; // Wembley Stadium
-    
+
     try {
         // Modern approach: Import required libraries
         const { Map } = await google.maps.importLibrary("maps");
@@ -142,9 +142,9 @@ async function initMap() {
 
         // Store the class for use in other functions
         window.AdvancedMarkerElement = AdvancedMarkerElement;
-        
+
         addGateMarkers();
-        
+
         // Add map click listener
         map.addListener('click', () => {
             if (activeInfoWindow) {
@@ -167,7 +167,7 @@ function addGateMarkers() {
         console.warn("[TITAN] Map or Marker library not ready.");
         return;
     }
-    
+
     // Clear previous markers
     gateMarkers.forEach(m => m.setMap(null));
     gateMarkers = [];
@@ -222,8 +222,8 @@ function addGateMarkers() {
         marker.addListener('click', () => {
             // Close any previously open InfoWindow
             if (activeInfoWindow) activeInfoWindow.close();
-            
-            const infoWindow = new google.maps.InfoWindow({ 
+
+            const infoWindow = new google.maps.InfoWindow({
                 content: infoContent,
                 disableAutoPan: false
             });
@@ -247,33 +247,33 @@ function addGateMarkers() {
 // --- SIMULATION (REAL-TIME MOCK) ---
 function simulateRealtimeData() {
     console.log("[TELEMETRY] Incoming sync...");
-    
+
     // Fluctuate Attendance slightly
     venueData.analytics.totalAttendance = Math.min(venueData.analytics.capacity, venueData.analytics.totalAttendance + Math.floor(Math.random() * 80 - 20));
-    
+
     // Fluctuate Temperature
     venueData.analytics.temperature = Math.round((venueData.analytics.temperature + (Math.random() * 0.2 - 0.1)) * 10) / 10;
-    
+
     let totalInflow = 0;
     let totalOutflow = 0;
 
     venueData.gates.forEach(gate => {
         // Shift Wait Times
-        gate.waitTime = Math.max(0, gate.waitTime + (Math.random() * 6 - 3)); 
-        
+        gate.waitTime = Math.max(0, gate.waitTime + (Math.random() * 6 - 3));
+
         // Intensity & Label mapping
-        if (gate.waitTime < 10) { 
-            gate.label = 'Optimal'; 
-            gate.intensity = Math.min(30, gate.intensity + (Math.random() * 10 - 5)); 
-        } else if (gate.waitTime < 25) { 
-            gate.label = 'Moderate'; 
-            gate.intensity = Math.min(60, Math.max(30, gate.intensity + (Math.random() * 10 - 5))); 
-        } else if (gate.waitTime < 45) { 
-            gate.label = 'Dense'; 
-            gate.intensity = Math.min(90, Math.max(60, gate.intensity + (Math.random() * 10 - 5))); 
-        } else { 
-            gate.label = 'Critical'; 
-            gate.intensity = Math.min(100, Math.max(90, gate.intensity + (Math.random() * 5))); 
+        if (gate.waitTime < 10) {
+            gate.label = 'Optimal';
+            gate.intensity = Math.min(30, gate.intensity + (Math.random() * 10 - 5));
+        } else if (gate.waitTime < 25) {
+            gate.label = 'Moderate';
+            gate.intensity = Math.min(60, Math.max(30, gate.intensity + (Math.random() * 10 - 5)));
+        } else if (gate.waitTime < 45) {
+            gate.label = 'Dense';
+            gate.intensity = Math.min(90, Math.max(60, gate.intensity + (Math.random() * 10 - 5)));
+        } else {
+            gate.label = 'Critical';
+            gate.intensity = Math.min(100, Math.max(90, gate.intensity + (Math.random() * 5)));
         }
 
         gate.intensity = Math.max(0, Math.min(100, gate.intensity));
@@ -298,7 +298,7 @@ function simulateRealtimeData() {
     renderAnalytics();
     renderAIInsights();
     selectStand(currentSelectedStand);
-    
+
     // Update map markers with live data
     if (map) addGateMarkers();
 
@@ -315,7 +315,7 @@ function renderAIInsights() {
     if (!elements.aiInsights) return;
     const stats = venueData.analytics;
     const utilPercent = ((stats.totalAttendance / stats.capacity) * 100).toFixed(1);
-    
+
     // Determine utilization color
     let utilColor = 'var(--clr-status-low)';
     if (utilPercent > 85) utilColor = 'var(--clr-status-med)';
@@ -359,7 +359,7 @@ function renderAIInsights() {
 function renderAnalytics() {
     if (!elements.analyticsOverview) return;
     const stats = venueData.analytics;
-    
+
     // Progress calculation for status bar
     let statusFillColor = 'var(--clr-status-low)';
     let statusFillWidth = '40%';
@@ -370,7 +370,7 @@ function renderAnalytics() {
         statusFillColor = 'var(--clr-accent)';
         statusFillWidth = '50%';
     }
-    
+
     elements.analyticsOverview.innerHTML = `
         <div class="analytics-card">
             <div class="stat-group">
@@ -391,7 +391,7 @@ function renderAnalytics() {
             <div style="font-size: 0.625rem; color: var(--clr-text-dim); margin-top: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.5s ease;">System State: ${stats.status}</div>
         </div>
     `;
-    
+
     if (window.lucide) lucide.createIcons();
 }
 
@@ -439,14 +439,14 @@ function renderGates() {
             </div>
         `;
     }).join('');
-    
+
     if (window.lucide) lucide.createIcons();
 }
 
 function selectStand(id) {
     if (!elements.standNav || !elements.detailsGrid) return;
     currentSelectedStand = id;
-    
+
     // Update Nav UI
     const btns = elements.standNav.querySelectorAll('.btn-pill');
     btns.forEach(btn => {
@@ -490,7 +490,7 @@ function selectStand(id) {
             </div>
         `;
     }).join('');
-    
+
     if (window.lucide) lucide.createIcons();
 }
 
@@ -551,7 +551,7 @@ function updateChatMessage(id, text) {
 
 async function callGemini(prompt) {
     const API_KEY = window.TITAN_CONFIG.GEMINI_KEY;
-    const MODEL = "gemini-2.5-flash";
+    const MODEL = "gemini-3.1-flash-lite-preview";
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
     // Build rich system context

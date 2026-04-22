@@ -1,5 +1,5 @@
 /* ============================================================
- * main.css — High-Density Layout Engine: Smart Venue Assistant
+ * main.css — Mobile-First Tactical Layout Engine
  * ============================================================ */
 
 *, *::before, *::after {
@@ -10,17 +10,28 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html,body {
-  height: 100vh;
+html, body {
+  min-height: 100vh;
   width: 100vw;
-  overflow: hidden;
   background: var(--clr-bg-primary);
   color: var(--clr-text-primary);
   font-family: var(--ff-body);
+  overflow-x: hidden;
 }
 
+.mobile-hide {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .mobile-hide {
+    display: inline;
+  }
+}
+
+/* FIXED HEADER: Always present */
 .topbar {
-  height: 72px;
+  height: 64px;
   width: 100%;
   padding: 0 var(--sp-4);
   background: var(--clr-bg-primary);
@@ -28,7 +39,9 @@ html,body {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--clr-surface-container);
-  z-index: 1000;
+  position: sticky;
+  top: 0;
+  z-index: 2000;
   box-shadow: var(--shadow-sm);
 }
 
@@ -38,16 +51,10 @@ html,body {
   gap: var(--sp-2);
 }
 
-.topbar__logo {
-  width: 32px;
-  height: 32px;
-  color: var(--clr-accent);
-}
-
 .topbar__app-name {
   font-family: var(--ff-display);
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--clr-text-primary);
   letter-spacing: -0.025em;
 }
@@ -55,43 +62,93 @@ html,body {
 .topbar__actions {
   display: flex;
   align-items: center;
-  gap: var(--sp-4);
+  gap: var(--sp-3);
 }
 
 /* ============================================================
- * LAYOUT: 60/40 Tactical Split
+ * MOBILE-FIRST LAYOUT: Single Column Scroll
  * ============================================================ */
 .main-viewport {
   display: flex;
-  flex-direction: row;
-  height: calc(100vh - 72px);
-  width: 100vw;
-  overflow: hidden;
+  flex-direction: column;
+  width: 100%;
   background: var(--clr-bg-primary);
 }
 
-/* Primary Interactive Zone (60%) */
+/* Primary Interactive Zone (Mobile: Top/Full) */
 .center-col {
-  flex: 0 0 60%;
-  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: var(--sp-4);
   gap: var(--sp-4);
-  border-right: 1px solid var(--clr-surface-container);
-  overflow-y: auto;
   background: var(--clr-bg-primary);
 }
 
-/* Map Container: 40% of col height */
+/* Map Container: High-visibility on mobile */
 .vmap-container {
-  flex: 0 0 40%;
-  min-height: 380px;
+  width: 100%;
+  height: 320px; /* Specific height for mobile focus */
   background: var(--clr-bg-secondary);
   border-radius: var(--radius-lg);
   overflow: hidden;
   position: relative;
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+/* Analytics Sidebar (Mobile: Below main content) */
+.right-panel {
+  width: 100%;
+  background: var(--clr-bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-4);
+  border-top: 1px solid var(--clr-surface-container);
+}
+
+/* ============================================================
+ * DESKTOP ADAPTATION (tactical 60/40 Split)
+ * ============================================================ */
+@media (min-width: 1024px) {
+  html, body {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .topbar {
+    height: 72px;
+    position: static;
+  }
+
+  .topbar__app-name {
+    font-size: 1.5rem;
+  }
+
+  .main-viewport {
+    flex-direction: row;
+    height: calc(100vh - 72px);
+  }
+
+  .center-col {
+    flex: 0 0 60%;
+    height: 100%;
+    overflow-y: auto;
+    border-right: 1px solid var(--clr-surface-container);
+  }
+
+  .right-panel {
+    flex: 0 0 40%;
+    height: 100%;
+    overflow-y: auto;
+    border-top: none;
+  }
+
+  .vmap-container {
+    height: auto;
+    flex: 0 0 42%; /* Restore tactical height ratio */
+    min-height: 400px;
+  }
 }
 
 .placeholder-map {
@@ -103,21 +160,8 @@ html,body {
   justify-content: center;
   color: var(--clr-text-dim);
   font-family: var(--ff-display);
-  font-size: 1.2rem;
+  font-size: 1rem;
+  text-align: center;
+  padding: 20px;
   letter-spacing: 0.05em;
-}
-
-/* Scrollable Analytics Sidebar (40%) */
-.right-panel {
-  flex: 0 0 40%;
-  height: 100%;
-  background: var(--clr-bg-sidebar);
-  display: flex;
-  flex-direction: column;
-  padding: var(--sp-4);
-  overflow-y: auto;
-}
-
-.right-panel::-webkit-scrollbar {
-  width: 0;
 }
