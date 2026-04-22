@@ -33,7 +33,7 @@ Our approach prioritizes **High-Density Information Design**. We enforce a stric
 
 | Service | Feature |
 |---------|---------|
-| **Gemini 1.5 Flash** | Chosen for high-speed inference and stable performance in mission-critical tactical support. |
+| **Gemini 3.1 Flash Lite** | State-of-the-art preview model for ultra-low latency tactical decision support. |
 | **Google Maps JS** | Satellite imagery situational awareness with custom tactical overlays. |
 | **GCP Cloud Run** | Containerized deployment for scalable, high-availability hosting. |
 | **Nginx Alpine** | Ultra-lightweight web server for sub-second load times. |
@@ -42,7 +42,7 @@ Our approach prioritizes **High-Density Information Design**. We enforce a stric
 ---
 
 ## 🏁 Latest Developments (April 2026)
-- **Stable Intelligence**: Migrated to `gemini-1.5-flash` to ensure consistent, reliable performance for real-time operations after validating against experimental models.
+- **Bleeding Edge Intelligence**: Migrated to `gemini-3.1-flash-lite-preview` for unparalleled response speed and high-fidelity tactical synthesis.
 - **Containerization**: Fully dockerized the application for seamless deployment.
 - **Live Deployment**: Hosted on Google Cloud Run with automated scaling.
 - **UI Refinement**: Optimized the 70/30 tactical split and improved accessibility for touch-screen command center monitors.
